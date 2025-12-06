@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7009f3b987720b24a8bb3d3120b841d1
+guid: 9279ea17b2e12e3458efaafed4e5519b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1792192322764188021
-    second: VibrationOnBtn_0
+      213: -530914025283958367
+    second: PlayWithFriendsPanel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: VibrationOnBtn_0
+      name: PlayWithFriendsPanel_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 286
-        height: 96
+        width: 2340
+        height: 1081
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 579aa8f0c652fd810800000000000000
-      internalID: 1792192322764188021
+      spriteID: 1a94da4c180d1a8f0800000000000000
+      internalID: -530914025283958367
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      VibrationOnBtn_0: 1792192322764188021
+      PlayWithFriendsPanel_0: -530914025283958367
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
