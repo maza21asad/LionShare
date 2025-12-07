@@ -36,11 +36,11 @@ public class MenuManager : MonoBehaviour
     public void AnimatePanelFade(GameObject panel)
     {
         CanvasGroup canvasGroup = panel.GetComponent<CanvasGroup>();
-        if (canvasGroup != null)
+        if (canvasGroup == null)
             canvasGroup = panel.AddComponent<CanvasGroup>();
 
         panel.transform.localScale = Vector3.one * 0.4f;
-        canvasGroup.alpha = 0f;
+        canvasGroup.alpha = 1f;
         panel.SetActive(true);
 
         // Animate both scale and fade
@@ -78,7 +78,7 @@ public class MenuManager : MonoBehaviour
             GameObject previous = panelHistory.Peek();
 
             CanvasGroup currentGroup = currect.GetComponent<CanvasGroup>();
-            if(currentGroup != null) 
+            if(currentGroup == null) 
                 currentGroup = currect.AddComponent<CanvasGroup>();
 
             // Animate currect panel closing
@@ -89,7 +89,7 @@ public class MenuManager : MonoBehaviour
                 currect.SetActive(false);
 
                 // Animate the previus panel back in
-                AnimatePanelFade(currect);
+                AnimatePanelFade(previous);
             });
         }
     }
