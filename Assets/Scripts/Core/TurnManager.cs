@@ -1,77 +1,73 @@
-using System;
 using UnityEngine;
+using System.Collections.Generic;
 
-/// <summary>
-/// Handles turn sequencing and asking the current player for a question.
-/// This component exposes events so UI/Network layers can subscribe.
-/// </summary>
 public class TurnManager : MonoBehaviour
 {
-    public static event Action<PlayerController> OnTurnChanged;
-    public int currentTurnIndex = 0;
+    public static TurnManager instance;
 
-    private bool isRunning = false;
+    [Header("Players In Order")]
+    public List<PlayerController> players;   // exactly 4 players
 
-    public void StartTurns()
+    private int turnIndex = 0;
+
+    private void Awake()
     {
-        currentTurnIndex = 0;
-        isRunning = true;
-        NotifyCurrentTurn();
+        instance = this;
     }
 
-    public void StopTurns()
+    private void Start()
     {
-        isRunning = false;
+        StartTurn();
     }
 
-    /// <summary>
-    /// Called by GameManager after resolving the previous answer.
-    /// This method advances the index to the next active player and notifies listeners.
-    /// </summary>
-    public void RequestNextTurn()
+    public PlayerController CurrentPlayer => players[turnIndex];
+
+    public void StartTurn()
     {
-        if (!isRunning) return;
-
-        int attempts = 0;
-        int playerCount = GameManager.Instance.players.Count;
-
-        // find next active player (skip eliminated/cashed out)
-        do
+        // Skip eliminated players
+        while (CurrentPlayer.isEliminated)
         {
-            currentTurnIndex = (currentTurnIndex + 1) % playerCount;
-            attempts++;
+            NextTurnIndex();
+        }
 
-            // safety: if all players except one are eliminated/cashed out, stop
-            if (attempts > playerCount)
-            {
-                // nothing to do — round manager should detect end conditions
-                return;
-            }
-        } while (IsPlayerInactive(GameManager.Instance.players[currentTurnIndex]));
-
-        NotifyCurrentTurn();
+        // Tell RoundManager whose turn this is
+        RoundManager.instance.StartRoundFor(CurrentPlayer);
     }
 
-    private bool IsPlayerInactive(PlayerController p)
+    public void EndTurn()
     {
-        return p == null || p.isEliminated || p.isCashedOut;
+        NextTurnIndex();
+        StartTurn();
     }
 
-    private void NotifyCurrentTurn()
+    private void NextTurnIndex()
     {
-        var currentPlayer = GameManager.Instance.players[currentTurnIndex];
-        OnTurnChanged?.Invoke(currentPlayer);
-
-        // Optionally, if using local flow you can automatically call QuestionManager here:
-        // QuestionManager.Instance.ShowQuestionFor(currentPlayer);
+        turnIndex++;
+        if (turnIndex >= players.Count)
+            turnIndex = 0;
     }
 
-    /// <summary>
-    /// Force set the turn to a specific player index (useful for reconnection/networking).
-    /// </summary>
-    public void SetTurnIndex(int index)
+    public bool AreAllPlayersDoneExceptOne()
     {
-        currentTurnIndex = index;
-        NotifyCurrentTurn();
+        int active = 0;
+
+        foreach (var p in players)
+        {
+            if (!p.isEliminated)
+                active++;
+        }
+
+        return active <= 1;
+    }
+
+    public PlayerController GetWinner()
+    {
+        foreach (var p in players)
+        {
+            if (!p.isEliminated)
+                return p;
+        }
+
+        return null;
     }
 }

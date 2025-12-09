@@ -1,54 +1,68 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Lightweight network abstraction. You can expand this to integrate Photon/NGO later.
-/// Two modes supported:
-/// - Local (single device testing)
-/// - Photon (toggle a compile symbol or expand with Photon PUN calls)
-/// 
-/// The goal: keep networking code separate from GameManager/TurnManager logic.
+/// Offline version of the NetworkManager.
+/// In Phase 1, it simply simulates 4 players locally.
+/// In Phase 2, this will be replaced with Photon logic.
 /// </summary>
 public class NetworkManager : MonoBehaviour
 {
-    public enum Mode { Local, Photon }
-    public Mode mode = Mode.Local;
+    public static NetworkManager Instance { get; private set; }
 
-    // Events you can subscribe to for networked messages
-    public static event Action<int, bool> OnRemoteAnswerReceived; // playerId, isCorrect
-    public static event Action<int> OnRemoteCashOut; // playerId
+    public bool isMultiplayer = false;  // change to true when Photon added
+    public int localPlayerIndex = 0;    // who is "me" when testing locally?
 
-    #region Local (single-machine) helpers
-    /// <summary>
-    /// Local invocation used in single-machine testing: emulate a player answering.
-    /// </summary>
-    public void LocalPlayerAnswered(int playerId, bool isCorrect)
+    private void Awake()
     {
-        // For local mode simply forward to GameManager
-        var player = FindPlayerById(playerId);
-        if (player != null)
+        if (Instance != null && Instance != this)
         {
-            GameManager.Instance.OnPlayerAnswered(player, isCorrect);
+            Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    public void LocalPlayerCashOut(int playerId)
+    /// <summary>
+    /// Called when game starts. In offline mode, we spawn 4 fake players.
+    /// In multiplayer mode (later), Photon will spawn real players.
+    /// </summary>
+    public void InitializePlayersOffline(List<PlayerController> players)
     {
-        var p = FindPlayerById(playerId);
-        if (p != null) p.CashOut();
+        // assign test names, positions etc.
+        players[0].InitializeOffline("You", 25000);
+        players[1].InitializeOffline("nadir", 25000);
+        players[2].InitializeOffline("jon 568", 25000);
+        players[3].InitializeOffline("nida", 25000);
     }
 
-    private PlayerController FindPlayerById(int id)
+    /// <summary>
+    /// Called when player answers a question.
+    /// Offline: Direct call.
+    /// Online (later): Will send an RPC.
+    /// </summary>
+    public void SendPlayerAnswer(PlayerController player, bool isCorrect)
     {
-        foreach (var p in GameManager.Instance.players)
-            if (p.playerID == id) return p;
-        return null;
+        // Offline → directly call GameManager
+        GameManager.instance.OnPlayerAnswered(player, isCorrect);
     }
-    #endregion
 
-    #region Photon / Network placeholders
-    // TODO: implement Photon RPCs here. Keep GameManager logic network-agnostic:
-    // - Broadcast player's answer
-    // - Receive other player's answer via event and call GameManager.OnPlayerAnswered locally
-    #endregion
+    /// <summary>
+    /// Offline simulation of stepping movements.
+    /// Online version will sync positions later.
+    /// </summary>
+    public void BroadcastPlayerStep(PlayerController player, int newStep)
+    {
+        // Nothing required in offline mode.
+        // Photon version will sync player position.
+    }
+
+    public void BroadcastLionStep(LionController lion, int newStep)
+    {
+        // Offline: do nothing.
+        // Photon version will sync.
+    }
 }

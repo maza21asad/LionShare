@@ -1,50 +1,22 @@
-﻿using UnityEditor.Rendering.Universal.ShaderGUI;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LionController : MonoBehaviour
 {
-    public int lionStep = 0; // 0 means inside cage
-    public bool isCageOpen = false;
+    public Transform lionObject;
+    public Transform stepsRoot;
 
-    public LionUI ui;
+    public int lionStep = -1;        // behind the player
 
-    // Called when ANY player gives a wrong answer AND the player is step >= 2
-    public void HandleWrongAnswer()
+    public void MoveCloser(int amount)
     {
-        if (!isCageOpen)
-        {
-            // FIRST wrong answer → Open cage
-            isCageOpen = true;
-            ui.OpenCage();
-        }
-        else
-        {
-            // SECOND+ wrong answers → Move lion forward
-            lionStep++;
-            ui.MoveToStep(lionStep);
-        }
+        lionStep += amount;
+        lionStep = Mathf.Min(lionStep, stepsRoot.childCount - 1);
+
+        lionObject.position = stepsRoot.GetChild(lionStep).position;
     }
 
-    // Check if lion catches a specific player
-    public bool CheckPlayerCaught(PlayerController player)
+    public bool IsCaughtUp(int playerStep)
     {
-        if (player.isEliminated || player.isFinished || player.isCashedOut)
-            return false;
-
-        if (lionStep == player.step)
-        {
-            player.isEliminated = true;
-            return true;
-        }
-
-        return false;
-    }
-
-    // Called when round restarts
-    public void ResetLion()
-    {
-        lionStep = 0;
-        isCageOpen = false;
-        ui.ResetPosition();
+        return lionStep >= playerStep;
     }
 }
