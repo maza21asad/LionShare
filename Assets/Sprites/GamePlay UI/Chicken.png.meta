@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a8f9460a3e9beb7439fab0f8fe602a77
+guid: cf3b04cb0bfaf124598afd8352728e99
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8927483254723334246
-    second: Step LS_0
+      213: 5336855417275088078
+    second: Chicken_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 30
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0.4}
+  spritePixelsToUnits: 35
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Step LS_0
+      name: Chicken_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 1
-        width: 113
-        height: 42
+        y: 0
+        width: 97
+        height: 94
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a9fa7f797453b1480800000000000000
-      internalID: -8927483254723334246
+      spriteID: eccfc44e9b1501a40800000000000000
+      internalID: 5336855417275088078
       vertices: []
       indices: 
       edges: []
@@ -151,8 +151,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
-    internalID: 0
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Step LS_0: -8927483254723334246
+      Chicken_0: 5336855417275088078
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
