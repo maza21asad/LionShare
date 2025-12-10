@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.U2D;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
     public string playerName;
+    public Sprite avatar; 
 
     [Header("Track")]
     public Transform stepsRoot;

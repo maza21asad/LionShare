@@ -15,6 +15,23 @@ public class RoundManager : MonoBehaviour
         // After clicking answer -> GameManager.instance.OnPlayerAnswered(player, isCorrect)
     }
 
+    public void CheckAnswer(bool isCorrect)
+    {
+        PlayerController p = GameManager.instance.CurrentPlayer;
+
+        if (isCorrect)
+        {
+            CorrectAnswer(p);
+        }
+        else
+        {
+            WrongAnswer(p);
+        }
+
+        // Move to next turn
+        GameManager.instance.NextTurn();
+    }
+
     // NEW — Called by GameManager when answer is correct
     public void CorrectAnswer(PlayerController p)
     {

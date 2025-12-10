@@ -1,16 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [Header("UI Panels")]
+    public List<GameObject> allPanel;
+    private Stack<GameObject> panelHistory = new Stack<GameObject>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
