@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using DG.Tweening;
+﻿using DG.Tweening;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManage : MonoBehaviour
 {
@@ -84,5 +85,10 @@ public class UIManage : MonoBehaviour
             current.SetActive(false);
             AnimatePanel(previous);
         });
+    }
+
+    public void LoadScene(int sceneId)
+    {
+        SceneManager.LoadScene(sceneId);
     }
 }

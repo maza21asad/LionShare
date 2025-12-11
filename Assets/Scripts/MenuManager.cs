@@ -1,5 +1,6 @@
 using DG.Tweening;
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,9 @@ public class MenuManager : MonoBehaviour
     public GameObject mainMenuPanel;
     public List<GameObject> allPanel;
 
+    [Header("Timed Panels")]
+    public int targetSceneIndex;
+
     private Stack<GameObject> panelHistory = new Stack<GameObject>();
 
     private void Awake()
@@ -19,6 +23,18 @@ public class MenuManager : MonoBehaviour
         if (instance == null) { instance = this; }
 
         ShowPanel(mainMenuPanel);
+    }
+
+    public void ShowPanelFor5SecThenLoad(GameObject panel)
+    {
+        StartCoroutine(PanelTimerRoutine(panel));
+    }
+
+    private IEnumerator PanelTimerRoutine(GameObject panel)
+    {
+        ShowPanel(panel);              // Show the correct panel
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene(targetSceneIndex);
     }
 
     public void ShowPanel(GameObject panelToShow)
